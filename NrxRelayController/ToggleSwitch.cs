@@ -80,21 +80,7 @@ namespace NrxRelayController
 
         private void toggleSwitch_Click(object sender, EventArgs e)
         {
-            if (device == null)
-            {
-                Console.WriteLine("Device not connected");
-                return;
-            }
 
-            if (usbData == null)
-            {
-                Console.WriteLine("USB data is null");
-                return;
-            }
-
-            HidReport report = new HidReport(usbData.Length, new HidDeviceData(usbData, HidDeviceData.ReadStatus.Success));
-            report.ReportId = 0x00;
-            device.WriteReport(report);
         }
 
         private void ToggleSwitch_ButtonTimer(object sender, EventArgs e)
@@ -125,15 +111,41 @@ namespace NrxRelayController
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            if (device == null)
+            {
+                Console.WriteLine("Device not connected");
+                return;
+            }
+
+            if (usbData == null)
+            {
+                Console.WriteLine("USB data is null");
+                return;
+            }
+
             if (!active)
             {
                 //buttonControl.deactivateAll();
                 active = true;
+
+                usbData[2] = Convert.ToByte(active);
+                HidReport report = new HidReport(usbData.Length, new HidDeviceData(usbData, HidDeviceData.ReadStatus.Success));
+                device.WriteReport(report);
+
+                Console.WriteLine("Relay" + Name[Name.Length - 1] + " is " + "closed");
+
                 timer.Start();
             }
             else
             {
                 active = false;
+
+                usbData[2] = Convert.ToByte(active);
+                HidReport report = new HidReport(usbData.Length, new HidDeviceData(usbData, HidDeviceData.ReadStatus.Success));
+                device.WriteReport(report);
+
+                Console.WriteLine("Relay" + Name[Name.Length - 1] + " is " + "opened");
+
                 timer.Start();
             }
             this.Refresh();

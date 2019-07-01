@@ -30,8 +30,8 @@ namespace NrxRelayController
 
             toggleSwitch1.device = this.device;
             toggleSwitch2.device = this.device;
-            toggleSwitch1.usbData = new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-            toggleSwitch2.usbData = new byte[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+            toggleSwitch1.usbData = new byte[] { 0, 0, 0 };
+            toggleSwitch2.usbData = new byte[] { 0, 1, 0 };
         }
 
         private int DeviceConnect()
